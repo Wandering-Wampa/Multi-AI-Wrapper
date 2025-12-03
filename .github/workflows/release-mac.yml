@@ -26,13 +26,15 @@ jobs:
       - name: Package macOS app
         run: npm run package-mac
 
-      - name: Create ZIP (preserves macOS metadata)
+      - name: Create ZIP (preserve macOS metadata)
         run: |
           ditto -c -k --sequesterRsrc --keepParent dist/MultiAICockpit-darwin-universal dist/MultiAICockpit-macOS-universal-${{ github.event.inputs.tag_name }}.zip
 
-      - name: Upload macOS ZIP to release (chunked, resilient)
-        uses: csexton/release-assets@v3
+      - name: Upload macOS ZIP to GitHub Release
+        uses: svenstaro/upload-release-action@v2
         with:
-          files: dist/MultiAICockpit-macOS-universal-${{ github.event.inputs.tag_name }}.zip
-          overwrite: true
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: dist/MultiAICockpit-macOS-universal-${{ github.event.inputs.tag_name }}.zip
+          asset_name: MultiAICockpit-macOS-universal-${{ github.event.inputs.tag_name }}.zip
           tag: ${{ github.event.inputs.tag_name }}
+          overwrite: true
