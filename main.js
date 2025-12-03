@@ -1,4 +1,4 @@
-const { app, BrowserWindow, BrowserView, ipcMain } = require("electron");
+const { app, BrowserWindow, BrowserView, ipcMain, Menu } = require("electron");
 const path = require("path");
 
 let mainWindow;
@@ -35,7 +35,27 @@ function ensureView(modelName) {
     }
   });
 
+  // Load the provider URL
   view.webContents.loadURL(url);
+
+  // Attach a basic right-click context menu
+  view.webContents.on("context-menu", (event, params) => {
+    // Standard text-edit menu; roles auto-enable/disable based on context
+    const template = [
+      { role: "undo" },
+      { role: "redo" },
+      { type: "separator" },
+      { role: "cut" },
+      { role: "copy" },
+      { role: "paste" },
+      { type: "separator" },
+      { role: "selectAll" }
+    ];
+
+    const menu = Menu.buildFromTemplate(template);
+    menu.popup({ window: mainWindow });
+  });
+
   views[modelName] = view;
   return view;
 }
@@ -87,7 +107,7 @@ function createWindow() {
     }
   });
 
-  // Load UI
+  // Load UI (top bar and tabs)
   mainWindow.loadFile("index.html");
 
   // Lazy preload: only create ChatGPT on startup
