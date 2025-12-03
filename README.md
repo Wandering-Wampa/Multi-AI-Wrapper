@@ -149,7 +149,6 @@ This is an early, experimental tool intended for personal use and tinkering. Exp
 ### Planned improvements
 
 - Keyboard shortcuts for tab switching (e.g. Ctrl+1 / Cmd+1)
-- Custom app icon and branding
-- Prebuilt releases for Windows and macOS attached to GitHub Releases
+- ~~Prebuilt releases for Windows and macOS attached to GitHub Releases~~
 - Optional “always on top” mode
 
